@@ -21,7 +21,7 @@ function Table(props) {
                 </tr>
             </thead>
             <tbody>
-                {props.filtredUsers.map((r,i) => <TableRow key={i} select = {props.selectProfile} {...r} />)}
+                {props.shownUsers.map((r,i) => <TableRow key={i} select = {props.selectProfile} {...r} />)}
             </tbody>
         </table>
         </div>

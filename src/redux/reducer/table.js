@@ -6,6 +6,7 @@ const CLOSE_INFO = "CLOSE_INFO";
 const CHANGE_FILTER_VALUE = 'CHANGE_FILTER_VALUE';
 
 const initialState = {
+    shownUsers: [],
     allUsersArr: [],
     filtredUsers: [],
     selectedProfile: null,
@@ -18,23 +19,26 @@ const tableReducer = (state = initialState, action) => {
             console.log('remove spinner')
             return {
                 ...state,
-                filtredUsers: action.data.splice(0, 10),
+                shownUsers: [...action.data].splice(0, 10),
                 allUsersArr: action.data,
             }
         case SELECT_PROFILE:
+            console.log(action)
             return {
                 ...state,
-                selectedProfile: state.filtredUsers.find(a => a.id === action.id)
+                selectedProfile: state.allUsersArr.find(a => a.id === action.id)
             }
         case CLOSE_INFO:
             return { ...state, selectedProfile: null, }
         case CHANGE_FILTER_VALUE:
+            let filtredArr = [...state.allUsersArr]
+                .filter(a => a.filterString.includes(
+                    action.value.split('').filter(a => a !== ' ').join('').toUpperCase()))
             return {
                 ...state,
                 filterValue: action.value.split('').filter(a => a !== ' ').join(''),
-                filtredUsers: [...state.allUsersArr]
-                    .filter(a => a.includes(
-                        action.value.split('').filter(a => a !== ' ').join('')))
+                filtredUsers: filtredArr,
+                shownUsers: [...filtredArr].splice(0, 10),
             }
         default:
             return state;
@@ -46,7 +50,7 @@ export const thunks = {
             resp => {
                 dispatch(ac.setupTableList(resp.map((a) => ({
                     ...a,
-                    filterString: (a.id + a.firstName + a.lastName + a.email + a.phone + a.state).toUpperCase()
+                    filterString: (a.id + a.firstName + a.lastName + a.email + a.phone + a.adress.state).toUpperCase()
                 }))))
             }
         )
