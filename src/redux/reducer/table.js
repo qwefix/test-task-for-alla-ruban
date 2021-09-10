@@ -1,16 +1,28 @@
 import tableAPI from "../../api/table";
 
-const REMOVE_MAIN_SPINNER = 'REMOVE_MAIN_SPINNER'
+const SETUP_TABLE_LIST = 'SETUP_TABLE_LIST';
+const SELECT_PROFILE = 'SELECT_PROFILE';
+const CLOSE_INFO = "CLOSE_INFO";
 
 const initialState = {
     tableList: [],
+    selectedProfile: null,
 };
 const tableReducer = (state = initialState, action) => {
     switch (action.type) {
-        case REMOVE_MAIN_SPINNER:
+        case SETUP_TABLE_LIST:
             console.log('remove spinner')
-            break;
-
+            return {
+                ...state,
+                tableList: action.data
+            }
+        case SELECT_PROFILE:
+            return {
+                ...state,
+                selectedProfile: state.tableList.find(a => a.id === action.id)
+            }
+        case CLOSE_INFO:
+            return { ...state, selectedProfile: null, }
         default:
             return state;
     }
@@ -19,19 +31,19 @@ export const thunks = {
     setupPage: () => (dispatch) => {
         tableAPI().then(
             resp => {
-                console.log(resp)
-                dispatch(ac.removeSpinner())
+                dispatch(ac.setupTableList(resp))
             }
         )
     }
 }
 const ac = {
-    removeSpinner: () => ({
-        type: REMOVE_MAIN_SPINNER
-    })
+    setupTableList: (data) => ({ type: SETUP_TABLE_LIST, data }),
+    selectProfile: (id) => ({ type: SELECT_PROFILE, id }),
+    closeInfo: () => ({ type: CLOSE_INFO })
 }
 
 export const tableInterface = {
-    setupPage: thunks.setupPage,
+    selectProfile: ac.selectProfile,
+    closeInfo: ac.closeInfo,
 }
 export default tableReducer

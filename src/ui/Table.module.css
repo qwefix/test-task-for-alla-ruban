@@ -1,0 +1,32 @@
+.wrapper{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow-y: hidden;
+}
+.table_wrapper{
+    overflow-y: auto;
+    height: 0;
+    flex-grow: 1;
+}
+.table{
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+.table td{
+    padding: 5px;
+    text-align: center;
+    border: 1px solid black;
+}
+.thead th{
+    padding: 5px;
+    border: 1px solid black;
+}
+.table tr{
+    transition: .3s;
+    user-select: none;
+    cursor: pointer;
+}
+.table tr:hover{
+    background-color: chartreuse;
+}
