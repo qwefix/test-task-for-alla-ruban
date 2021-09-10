@@ -2,10 +2,12 @@ import React from "react"
 import TableRow from "./TableRow/TableRow"
 import c from './Table.module.css'
 import Info from './Info/Info'
+import {Filter} from './Filter/Filter'
 
 function Table(props) {
     console.log(props)
     return <div className = {c.wrapper}>
+        <Filter value={props.filterValue} handler ={props.changeFilterValue}/>
         <div className = {c.table_wrapper}>
         <table className={c.table}>
             <thead className={c.thead}>
@@ -19,7 +21,7 @@ function Table(props) {
                 </tr>
             </thead>
             <tbody>
-                {props.tableList.map((r,i) => <TableRow key={i} select = {props.selectProfile} {...r} />)}
+                {props.filtredUsers.map((r,i) => <TableRow key={i} select = {props.selectProfile} {...r} />)}
             </tbody>
         </table>
         </div>
