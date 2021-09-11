@@ -5,9 +5,10 @@ import Info from './Info/Info'
 import { Filter } from './Filter/Filter'
 import TableHeader from "./TableHeader/TableHeader"
 import Pagination from "./Pagination/Pagination"
+import Spinner from "./Spinner/Spinner"
 
-function Table(props) {
-    console.log(props.selectedState)
+function Table(props) {    
+    if(props.spinner) return<div className={c.wrapper}><Spinner/></div>
     return <div className={c.wrapper}>
         <Filter selectedState={props.selectedState}
             value={props.filterValue}

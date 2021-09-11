@@ -27,11 +27,11 @@ const initialState = {
     selectedState: '',
     allStates: [],
     page: 0,
+    spinner: true,
 };
 const tableReducer = (state = initialState, action) => {
     switch (action.type) {
         case SETUP_TABLE_LIST:
-            console.log('remove spinner')
             return {
                 ...state,
                 filtredUsers: action.data,
@@ -39,6 +39,7 @@ const tableReducer = (state = initialState, action) => {
                 orderedUsers: action.data,
                 allStates: [...action.data].map(a => a.state).filter((item, index, arr) => arr.indexOf(item) === index),
                 shownUsers: [...action.data].splice(0, 20),
+                spinner: false,
             }
         case SELECT_PROFILE:
             return {
@@ -51,12 +52,10 @@ const tableReducer = (state = initialState, action) => {
                 selectedProfile: null,
             }
         case CHANGE_FILTER_VALUE:
-            console.log(action)
             let filtredArr = [...state.allUsersArr]
                 .filter(a => a.filterString.includes(
                     action.value.split('').filter(a => a !== ' ').join('').toUpperCase()))
                 .filter(a => a.state.includes(action.state))
-            console.log(filtredArr)
             return {
                 ...state,
                 filterValue: action.value.split('').filter(a => a !== ' ').join(''),
