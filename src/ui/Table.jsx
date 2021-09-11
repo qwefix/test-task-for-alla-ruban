@@ -4,11 +4,13 @@ import c from './Table.module.css'
 import Info from './Info/Info'
 import { Filter } from './Filter/Filter'
 import TableHeader from "./TableHeader/TableHeader"
+import Pagination from "./Pagination/Pagination"
 
 function Table(props) {
-    // console.log(props.filtredUsers , props.shownUsers)
+    console.log(props)
     return <div className={c.wrapper}>
         <Filter value={props.filterValue} handler={props.changeFilterValue} />
+        <Pagination currentPage={props.page+1} totalPages={Math.ceil(props.filtredUsers.length  /10)} selectPage={props.selectPage}  />
         <div className={c.table_wrapper}>
             <table className={c.table}>
                 <thead className={c.thead}>

@@ -14,6 +14,7 @@ const SELECT_PROFILE = 'SELECT_PROFILE';
 const CLOSE_INFO = "CLOSE_INFO";
 const CHANGE_FILTER_VALUE = 'CHANGE_FILTER_VALUE';
 const ORDER_SHOWN_ARRAY = 'ORDER_SHOWN_ARRAY';
+const SELECT_PAGE = 'SELECT_PAGE';
 
 const initialState = {
     columns: [...templateColumns],
@@ -79,18 +80,25 @@ const tableReducer = (state = initialState, action) => {
             }
         case ORDER_SHOWN_ARRAY:
             let columnOrderBy = state.columns.find(c => c.arrow);
-            if (!columnOrderBy) return { ...state, shownUsers: [...state.filtredUsers].splice(state.page, 10) };
+            if (!columnOrderBy) return { ...state, shownUsers: [...state.allUsersArr].splice(state.page, 10) };
 
             let directionMult = 1;
             const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
             if (columnOrderBy.arrow === 'up') directionMult = -1;
-            console.log(columnOrderBy, directionMult)
+            let orderedArray = [...state.filtredUsers].sort((a, b) =>
+                directionMult * collator.compare(a[columnOrderBy.path], b[columnOrderBy.path]))
             return {
                 ...state,
-                shownUsers: [...state.filtredUsers].sort((a, b) =>
-                    directionMult * collator.compare(a[columnOrderBy.path], b[columnOrderBy.path]))
-                    .splice(state.page, 10)
+                filtredUsers: [...orderedArray],
+                shownUsers: [...orderedArray].splice(state.page, 10),
             }
+        case SELECT_PAGE:
+            return {
+                ...state,
+                page: action.page,
+                shownUsers: [...state.filtredUsers].splice(action.page * 10, 10)
+            }
+
         default:
             return state;
     }
@@ -126,7 +134,12 @@ const ac = {
     selectProfile: (reduxID) => ({ type: SELECT_PROFILE, reduxID }),
     closeInfo: () => ({ type: CLOSE_INFO }),
 
-    orderShownArray: () => ({ type: ORDER_SHOWN_ARRAY, })
+    orderShownArray: () => ({ type: ORDER_SHOWN_ARRAY, }),
+
+    selectPage: (page) => ({
+        type: SELECT_PAGE,
+        page: page - 1,
+    })
 }
 
 export const tableInterface = {
@@ -135,5 +148,7 @@ export const tableInterface = {
 
     changeFilterValue: thunks.changeFilterValue,
     selectColumn: thunks.selectColumn,
+
+    selectPage: ac.selectPage,
 }
 export default tableReducer

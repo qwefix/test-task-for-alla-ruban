@@ -1,0 +1,32 @@
+.pagination_wrapper{
+    user-select: none;
+    transition: 1s;
+    display: flex;
+    justify-content: center;
+    background-color: grey;
+}
+.pagination_wrapper>div{
+    padding: 5px;
+    margin: 3px;
+    border-radius: 100%;
+    min-width: 15px;
+    height: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: default;
+    color:white;
+}
+.pagination_wrapper>div.current{
+    border: 2px dashed white;
+    margin: 1px;
+}
+.pagination_wrapper>div.clickable{
+    cursor: pointer;
+    background-color: rgb(63, 63, 63);
+}
+.pagination_wrapper>div.clickable:hover{
+    transition: .2s;
+    background-color: white;
+    color: black;
+}
