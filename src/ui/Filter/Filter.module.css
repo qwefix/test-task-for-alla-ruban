@@ -11,3 +11,7 @@
 .input:focus{
     outline: none;
 }
+.select{
+    height: 30px;
+    margin: 5px ;
+}

@@ -24,6 +24,8 @@ const initialState = {
     filtredUsers: [],
     selectedProfile: null,
     filterValue: '',
+    selectedState: '',
+    allStates: [],
     page: 0,
 };
 const tableReducer = (state = initialState, action) => {
@@ -35,7 +37,8 @@ const tableReducer = (state = initialState, action) => {
                 filtredUsers: action.data,
                 allUsersArr: action.data,
                 orderedUsers: action.data,
-                shownUsers: [...action.data].splice(0, 10),
+                allStates: [...action.data].map(a => a.state).filter((item, index, arr) => arr.indexOf(item) === index),
+                shownUsers: [...action.data].splice(0, 20),
             }
         case SELECT_PROFILE:
             return {
@@ -48,15 +51,18 @@ const tableReducer = (state = initialState, action) => {
                 selectedProfile: null,
             }
         case CHANGE_FILTER_VALUE:
-
+            console.log(action)
             let filtredArr = [...state.allUsersArr]
                 .filter(a => a.filterString.includes(
                     action.value.split('').filter(a => a !== ' ').join('').toUpperCase()))
+                .filter(a => a.state.includes(action.state))
+            console.log(filtredArr)
             return {
                 ...state,
                 filterValue: action.value.split('').filter(a => a !== ' ').join(''),
                 filtredUsers: [...filtredArr],
                 page: 0,
+                selectedState: action.state,
             }
         case SELECT_COLUMN_HEADER:
             let modifiedArrOfColumns = [...templateColumns]
@@ -84,7 +90,7 @@ const tableReducer = (state = initialState, action) => {
             let columnOrderBy = state.columns.find(c => c.arrow);
             if (!columnOrderBy) return {
                 ...state,
-                shownUsers: [...state.filtredUsers].splice(state.page, 10),
+                shownUsers: [...state.filtredUsers].splice(state.page, 20),
                 orderedUsers: [...state.filtredUsers]
             };
             let directionMult = 1;
@@ -98,14 +104,14 @@ const tableReducer = (state = initialState, action) => {
             return {
                 ...state,
                 orderedUsers: [...orderedArray],
-                shownUsers: [...orderedArray].splice(state.page, 10),
+                shownUsers: [...orderedArray].splice(state.page, 20),
             }
 
         case SELECT_PAGE:
             return {
                 ...state,
                 page: action.page,
-                shownUsers: [...state.orderedUsers].splice(action.page * 10, 10)
+                shownUsers: [...state.orderedUsers].splice(action.page * 20, 20)
             }
 
         default:
@@ -126,8 +132,8 @@ export const thunks = {
             }
         )
     },
-    changeFilterValue: (value) => (dispatch) => {
-        dispatch(ac.changeFilterValue(value));
+    changeFilterValue: (value, state) => (dispatch) => {
+        dispatch(ac.changeFilterValue(value, state));
         dispatch(ac.orderShownArray());
     },
     selectColumn: (id) => (dispatch) => {
@@ -139,7 +145,7 @@ const ac = {
     setupTableList: (data) => ({ type: SETUP_TABLE_LIST, data }),
 
     selectColumn: (id) => ({ type: SELECT_COLUMN_HEADER, id }),
-    changeFilterValue: (value) => ({ type: CHANGE_FILTER_VALUE, value }),
+    changeFilterValue: (value, state) => ({ type: CHANGE_FILTER_VALUE, value, state }),
 
     selectProfile: (reduxID) => ({ type: SELECT_PROFILE, reduxID }),
     closeInfo: () => ({ type: CLOSE_INFO }),

@@ -17,6 +17,7 @@
 .table td{
     padding: 3px;
     text-align: center;
+    word-break: break-all;
 }
 .table td:nth-child(n+2){
     border-left:1px solid black ;

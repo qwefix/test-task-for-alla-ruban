@@ -7,9 +7,12 @@ import TableHeader from "./TableHeader/TableHeader"
 import Pagination from "./Pagination/Pagination"
 
 function Table(props) {
-    console.log(props)
+    console.log(props.selectedState)
     return <div className={c.wrapper}>
-        <Filter value={props.filterValue} handler={props.changeFilterValue} />
+        <Filter selectedState={props.selectedState}
+            value={props.filterValue}
+            handler={props.changeFilterValue}
+            allStates={props.allStates} />
         <div className={c.table_wrapper}>
             <table className={c.table}>
                 <thead className={c.thead}>
@@ -28,7 +31,7 @@ function Table(props) {
         </div>
         <Info profile={props.selectedProfile} close={props.closeInfo} />
         <Pagination currentPage={props.page + 1}
-            totalPages={Math.ceil(props.orderedUsers.length / 10)}
+            totalPages={Math.ceil(props.orderedUsers.length / 20)}
             selectPage={props.selectPage} />
     </div>
 }

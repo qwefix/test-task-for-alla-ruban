@@ -6,15 +6,16 @@
     background-color: grey;
 }
 .pagination_wrapper>div{
-    padding: 5px;
+    white-space: nowrap;
+    padding: 3px;
     margin: 3px;
     border-radius: 100%;
-    min-width: 15px;
+    width: 15px;
+    max-width: 15px;
     height: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: default;
     color:white;
 }
 .pagination_wrapper>div.current{
