@@ -27,14 +27,12 @@ const initialState = {
 const tableReducer = (state = initialState, action) => {
     switch (action.type) {
         case SETUP_TABLE_LIST:
-            let setupDataArray = [...action.data].map(a => ({ ...a, state: a.adress.state }))
-
-            console.log('remove spinner', setupDataArray)
+            console.log('remove spinner')
             return {
                 ...state,
-                filtredUsers: setupDataArray,
-                shownUsers: setupDataArray.splice(0, 10),
-                allUsersArr: setupDataArray,
+                filtredUsers: action.data,
+                allUsersArr: action.data,
+                shownUsers: [...action.data].splice(0, 10),
             }
         case SELECT_PROFILE:
             return {
@@ -70,6 +68,8 @@ const tableReducer = (state = initialState, action) => {
                 case 'up':
                     modifiedItem.arrow = undefined
                     break;
+                default:
+                    break;
             }
             modifiedArrOfColumns.splice(action.id, 1, modifiedItem)
             return {
@@ -103,6 +103,7 @@ export const thunks = {
                     ...a,
                     filterString: [a.id, a.firstName, a.lastName, a.email, a.phone].join('+').toUpperCase(),
                     reduxID: i,
+                    state: a.adress.state,
                 }))))
             }
         )
