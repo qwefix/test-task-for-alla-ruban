@@ -19,6 +19,7 @@ const SELECT_PAGE = 'SELECT_PAGE';
 const initialState = {
     columns: [...templateColumns],
     shownUsers: [],
+    orderedUsers: [],
     allUsersArr: [],
     filtredUsers: [],
     selectedProfile: null,
@@ -33,6 +34,7 @@ const tableReducer = (state = initialState, action) => {
                 ...state,
                 filtredUsers: action.data,
                 allUsersArr: action.data,
+                orderedUsers: action.data,
                 shownUsers: [...action.data].splice(0, 10),
             }
         case SELECT_PROFILE:
@@ -53,7 +55,6 @@ const tableReducer = (state = initialState, action) => {
                 ...state,
                 filterValue: action.value.split('').filter(a => a !== ' ').join(''),
                 filtredUsers: filtredArr,
-                shownUsers: [...filtredArr].splice(0, 10),
                 page: 0,
             }
         case SELECT_COLUMN_HEADER:
@@ -80,7 +81,7 @@ const tableReducer = (state = initialState, action) => {
             }
         case ORDER_SHOWN_ARRAY:
             let columnOrderBy = state.columns.find(c => c.arrow);
-            if (!columnOrderBy) return { ...state, shownUsers: [...state.allUsersArr].splice(state.page, 10) };
+            if (!columnOrderBy) return { ...state, shownUsers: [...state.filtredUsers].splice(state.page, 10) };
 
             let directionMult = 1;
             const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
@@ -89,7 +90,7 @@ const tableReducer = (state = initialState, action) => {
                 directionMult * collator.compare(a[columnOrderBy.path], b[columnOrderBy.path]))
             return {
                 ...state,
-                filtredUsers: [...orderedArray],
+                orderedUsers: [...orderedArray],
                 shownUsers: [...orderedArray].splice(state.page, 10),
             }
         case SELECT_PAGE:
@@ -148,7 +149,6 @@ export const tableInterface = {
 
     changeFilterValue: thunks.changeFilterValue,
     selectColumn: thunks.selectColumn,
-
     selectPage: ac.selectPage,
 }
 export default tableReducer

@@ -8,7 +8,7 @@
 .inner_th img{
     margin-left: 5px;
     width: 10px;
-    transform: scaleY(0.1);
+    transform: scaleY(0);
 }
 .inner_th img.down{
     transform: initial;

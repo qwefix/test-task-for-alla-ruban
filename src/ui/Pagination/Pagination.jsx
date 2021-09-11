@@ -1,7 +1,6 @@
 import c from './Pagination.module.css'
 import React from 'react'
 function Pagination(props) {
-    console.log(props)
     let pagination = [props.currentPage - 2,
     props.currentPage - 1,
     props.currentPage,

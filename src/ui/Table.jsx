@@ -10,7 +10,6 @@ function Table(props) {
     console.log(props)
     return <div className={c.wrapper}>
         <Filter value={props.filterValue} handler={props.changeFilterValue} />
-        <Pagination currentPage={props.page+1} totalPages={Math.ceil(props.filtredUsers.length  /10)} selectPage={props.selectPage}  />
         <div className={c.table_wrapper}>
             <table className={c.table}>
                 <thead className={c.thead}>
@@ -28,6 +27,9 @@ function Table(props) {
             </table>
         </div>
         <Info profile={props.selectedProfile} close={props.closeInfo} />
+        <Pagination currentPage={props.page + 1}
+            totalPages={Math.ceil(props.filtredUsers.length / 10)}
+            selectPage={props.selectPage} />
     </div>
 }
 
