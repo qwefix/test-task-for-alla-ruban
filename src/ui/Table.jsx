@@ -6,7 +6,7 @@ import { Filter } from './Filter/Filter'
 import TableHeader from "./TableHeader/TableHeader"
 
 function Table(props) {
-    console.log(props)
+    // console.log(props.filtredUsers , props.shownUsers)
     return <div className={c.wrapper}>
         <Filter value={props.filterValue} handler={props.changeFilterValue} />
         <div className={c.table_wrapper}>
