@@ -5,7 +5,14 @@ import React from "react"
 import store from "../redux/store"
 
 
-const mapState=(state)=>state
+const mapState=(state)=>({
+    shownUsers:state.shownUsers,
+    page:state.page,
+    filterValue:state.filterValue,
+    selectedProfile:state.selectedProfile,
+    columns:state.columns,
+    orderedUsers:state.orderedUsers,
+})
 
 function TableContainer(props){
     React.useEffect(() => {

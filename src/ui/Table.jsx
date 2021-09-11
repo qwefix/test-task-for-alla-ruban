@@ -28,7 +28,7 @@ function Table(props) {
         </div>
         <Info profile={props.selectedProfile} close={props.closeInfo} />
         <Pagination currentPage={props.page + 1}
-            totalPages={Math.ceil(props.filtredUsers.length / 10)}
+            totalPages={Math.ceil(props.orderedUsers.length / 10)}
             selectPage={props.selectPage} />
     </div>
 }

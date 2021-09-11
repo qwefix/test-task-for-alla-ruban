@@ -48,13 +48,14 @@ const tableReducer = (state = initialState, action) => {
                 selectedProfile: null,
             }
         case CHANGE_FILTER_VALUE:
+
             let filtredArr = [...state.allUsersArr]
                 .filter(a => a.filterString.includes(
                     action.value.split('').filter(a => a !== ' ').join('').toUpperCase()))
             return {
                 ...state,
                 filterValue: action.value.split('').filter(a => a !== ' ').join(''),
-                filtredUsers: filtredArr,
+                filtredUsers: [...filtredArr],
                 page: 0,
             }
         case SELECT_COLUMN_HEADER:
@@ -81,18 +82,25 @@ const tableReducer = (state = initialState, action) => {
             }
         case ORDER_SHOWN_ARRAY:
             let columnOrderBy = state.columns.find(c => c.arrow);
-            if (!columnOrderBy) return { ...state, shownUsers: [...state.filtredUsers].splice(state.page, 10) };
-
+            if (!columnOrderBy) return {
+                ...state,
+                shownUsers: [...state.filtredUsers].splice(state.page, 10),
+                orderedUsers: [...state.filtredUsers]
+            };
             let directionMult = 1;
             const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
+
             if (columnOrderBy.arrow === 'up') directionMult = -1;
-            let orderedArray = [...state.filtredUsers].sort((a, b) =>
+
+            let orderedArray = [...state.filtredUsers]
+            orderedArray.sort((a, b) =>
                 directionMult * collator.compare(a[columnOrderBy.path], b[columnOrderBy.path]))
             return {
                 ...state,
                 orderedUsers: [...orderedArray],
                 shownUsers: [...orderedArray].splice(state.page, 10),
             }
+
         case SELECT_PAGE:
             return {
                 ...state,
@@ -110,7 +118,8 @@ export const thunks = {
             resp => {
                 dispatch(ac.setupTableList(resp.map((a, i) => ({
                     ...a,
-                    filterString: [a.id, a.firstName, a.lastName, a.email, a.phone].join('+').toUpperCase(),
+                    filterString: [a.id, a.firstName, a.lastName, a.email, a.phone]
+                        .join('+').toUpperCase(),
                     reduxID: i,
                     state: a.adress.state,
                 }))))
