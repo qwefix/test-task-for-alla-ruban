@@ -1,7 +1,6 @@
 import c from './Info.module.css'
 
 function Info({profile,close}) {
-    console.log(profile)
     if (!profile) return <div className={c.info_wrapper+' '+c.hidden}/>
     const{firstName,lastName,description,adress}=profile
     return <div className={c.info_wrapper}>

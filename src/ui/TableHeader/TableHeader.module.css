@@ -1,0 +1,18 @@
+.inner_th{
+    user-select: none;
+    display: flex;
+    width: fit-content;
+    margin: 0 auto;
+    align-items: center;
+}
+.inner_th img{
+    margin-left: 5px;
+    width: 10px;
+    transform: scaleY(0.1);
+}
+.inner_th img.down{
+    transform: initial;
+}
+.inner_th img.up{
+    transform: rotate(180deg);
+}
