@@ -97,7 +97,7 @@ const tableReducer = (state = initialState, action) => {
             return {
                 ...state,
                 page: action.page,
-                shownUsers: [...state.filtredUsers].splice(action.page * 10, 10)
+                shownUsers: [...state.orderedUsers].splice(action.page * 10, 10)
             }
 
         default:
